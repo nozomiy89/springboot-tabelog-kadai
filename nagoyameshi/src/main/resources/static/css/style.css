@@ -1,0 +1,75 @@
+html {
+	font-size: 14px;
+}
+
+body {
+	font-family: 'Noto Sans JP', sans-serif;
+}
+
+h1 {
+	font-size: 1.5rem;
+}
+
+a {
+	color:#f68b1f;
+	text-decoration: none !important;
+}
+
+a:hover {
+	color:#c16f1d;
+}
+
+footer {
+	width: 100%;
+	height: 60px;
+	position: absolute;
+	bottom: 0%;
+	background-color: #f8f4e6;
+}
+
+.nagoyameshi-wrapper {
+	min-height: 100vh;
+	position: relative;
+	padding-bottom: 60px;
+	box-sizing: border-box;
+}
+
+.nagoyameshi-navbar {
+	min-height: 60px;
+}
+
+.nagoyameshi-logo {
+	height: 30px;
+}
+
+.nagoyameshi-btn {
+	background-color: #f68b1f !important;
+	transition: 0.1s;
+}
+
+.nagoyameshi-btn:hover {
+	opacity: 0.8;
+}
+
+.nagoyameshi-page-link {
+	color: #f68b1f;
+}
+
+.nagoyameshi-page-link:hover {
+	color: #c16f1d;
+}
+
+.nagoyameshi-active {
+	background-color: #f68b1f !important;
+	border-color: #f68b1f !important;
+}
+
+.nagoyameshi-pre-wrap {
+	white-space: pre-wrap;
+}
+
+@media screen and(min-width: 1400px) {
+	.nagoyameshi-container {
+		max-width: 1200px;
+	}
+}
