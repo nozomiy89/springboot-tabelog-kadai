@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.nagoyameshi.entity.Category;
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantRegisterForm;
 import com.example.nagoyameshi.repository.CategoryRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
@@ -82,4 +83,18 @@ public class AdminRestaurantController {
 		
 		return "redirect:/admin/restaurants";
 	}
+	
+	@GetMapping("/{id}/edit")
+	public String edit(@PathVariable(name = "id") Integer id, Model model) {
+		Restaurant restaurant = restaurantRepository.getReferenceById(id);
+		String imageName = restaurant.getImageName();
+		RestaurantEditForm restaurantEditForm = new RestaurantEditForm(restaurant.getId(), restaurant.getCategory(), restaurant.getName(), null, restaurant.getDescription(), restaurant.getLowerPrice(), restaurant.getUpperPrice(), restaurant.getOpeningTime().toString(), restaurant.getClosingTime().toString(), restaurant.getPostalCode(), restaurant.getAddress(), restaurant.getPhoneNumber(), restaurant.getRegularHoliday());
+		List<Category> categories = categoryRepository.findAll();
+		
+		model.addAttribute("imageName", imageName);
+		model.addAttribute("restaurantEditForm", restaurantEditForm);
+		model.addAttribute("categories", categories);
+		
+		return "admin/restaurants/edit";
+		}
 }

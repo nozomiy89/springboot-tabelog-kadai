@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+
+    <title>店舗情報編集</title>
+  </head>
+  <body>
+    <div class="nagoyameshi-wrapper">
+      <div th:replace="~{fragment :: header}"></div>
+
+      <main>
+        <div class="container pt-4 pb-5 nagoyameshi-container">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6 col-md-8">
+              <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                  <li class="breadcrumb-item"><a th:href="@{/admin/restaurants}">店舗一覧</a></li>
+                  <li class="breadcrumb-item"><a th:href="@{/admin/restaurants/__${restaurantEditForm.getId()}__}">店舗詳細</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">店舗情報編集</li>
+                </ol>
+              </nav>
+
+              <h1 class="mb-4 text-center">店舗情報編集</h1>
+
+              <form method="post" th:action="@{admin/restaurants/__${restaurantEditForm.getId()}__/update}" th:object="${restaurantEditForm}" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}">
+
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                    <label for="name" class="col-form-label text-md-left fw-bold">店舗名</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2" th:errors="*{name}"></div>
+                    <input type="text" class="form-control" th:field="*{name}" autofocus>
+                  </div>
+                </div>
+
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                    <label for="name" class="col-form-label text-md-left fw-bold">カテゴリ</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div th:if="${#fields.hasErrors('category')}" class="text-danger small mb-2" th:errors="*{category}"></div>
+                    <select id="category" name="category" class="form-control" th:field="*{category}">
+						<option value="">カテゴリを選択してください</option>
+                      	<option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="imageFile" class="col-form-label text-md-left fw-bold">民宿画像</label>
+                  </div>
+                  <div class="col-md-8">
+                      <div th:if="${#fields.hasErrors('imageFile')}" class="text-danger small mb-2" th:errors="*{imageFile}"></div>
+                      <input type="file" class="form-control" th:field="*{imageFile}">
+                  </div>
+                </div>
+
+                <!-- 選択された画像の表示場所 -->
+                <div th:if="${imageName}" class="row" id="imagePreview"><img th:src="@{/storage/__${imageName}__}" class="mb-3"></div>
+                <div th:unless="${imageName}" class="row" id="imagePreview"></div>
+
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="description" class="col-form-label text-md-left fw-bold">説明</label>
+                  </div>
+                  <div class="col-md-8">
+                      <div th:if="${#fields.hasErrors('description')}" class="text-danger small mb-2" th:errors="*{description}"></div>
+                      <textarea class="form-control" th:field="*{description}" cols="30" rows="5"></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="budget" class="col-form-label text-md-left fw-bold">予算</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="d-flex justify-content-between">
+                      <div th:if="${#fields.hasErrors('lowerPrice')}" class="text-danger small mb-2" th:errors="*{lowerPrice}"></div>      
+                      <div th:if="${#fields.hasErrors('upperPrice')}" class="text-danger small mb-2" th:errors="*{upperPrice}"></div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <input type="number" class="form-control" th:field="*{lowerPrice}"></input>
+                      <span>円〜</span>
+                      <input type="number" class="form-control" th:field="*{upperPrice}"></input>
+                      <span>円</span>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="openingTime" class="col-form-label text-md-left fw-bold">営業時間</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="d-flex justify-content-between">
+                      <div th:if="${#fields.hasErrors('openingTime')}" class="text-danger small mb-2" th:errors="*{openingTime}"></div>
+                      <div th:if="${#fields.hasErrors('closingTime')}" class="text-danger small mb-2" th:errors="*{closingTime}"></div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <input type="text" class="form-control" th:field="*{openingTime}"></input>
+                      <span>〜</span>
+                      <input type="text" class="form-control" th:field="*{closingTime}"></input>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="postalCode" class="col-form-label text-md-left fw-bold">郵便番号</label>
+                  </div>
+                  <div class="col-md-8">                            
+                      <div th:if="${#fields.hasErrors('postalCode')}" class="text-danger small mb-2" th:errors="*{postalCode}"></div>                                        
+                      <input type="text" class="form-control" th:field="*{postalCode}"></input>
+                  </div>
+                </div>
+  
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="address" class="col-form-label text-md-left fw-bold">住所</label>
+                  </div>
+                  <div class="col-md-8">                            
+                      <div th:if="${#fields.hasErrors('address')}" class="text-danger small mb-2" th:errors="*{address}"></div>                                        
+                      <input type="text" class="form-control" th:field="*{address}"></input>
+                  </div>
+                </div>
+  
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="phoneNumber" class="col-form-label text-md-left fw-bold">電話番号</label>
+                  </div>
+                  <div class="col-md-8">                            
+                      <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger small mb-2" th:errors="*{phoneNumber}"></div>                                        
+                      <input type="text" class="form-control" th:field="*{phoneNumber}"></input>
+                  </div>
+                </div>
+  
+                <div class="form-group row mb-3">
+                  <div class="col-md-4">
+                      <label for="regularHoliday" class="col-form-label text-md-left fw-bold">定休日</label>
+                  </div>
+                  <div class="col-md-8">                            
+                      <div th:if="${#fields.hasErrors('regularHoliday')}" class="text-danger small mb-2" th:errors="*{regularHoliday}"></div>                                        
+                      <input type="text" class="form-control" th:field="*{regularHoliday}"></input>
+                  </div>
+                </div>
+
+                <div class="form-group d-flex justify-content-center my-4">
+                  <button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">更新</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div th:replace="~{fragment :: footer}"></div>
+    </div>
+
+    <div th:replace="~{fragment :: scripts}"></div>
+    <script th:src="@{/js/preview.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <script>
+      flatpickr('#openingTime', {
+        locale: 'ja',
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true
+      });
+      flatpickr('#closingTime', {
+        locale: 'ja',
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true
+      });
+    </script>
+  </body>
+</html>
