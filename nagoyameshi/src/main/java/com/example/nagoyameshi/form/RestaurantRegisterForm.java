@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.form;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +14,7 @@ import lombok.Data;
 
 @Data
 public class RestaurantRegisterForm {
-	@NotBlank(message = "カテゴリを選択してください")
+	@NotNull(message = "カテゴリを選択してください")
 	private Category category;
 	
 	@NotBlank(message = "店舗名を入力してください")
@@ -24,19 +25,19 @@ public class RestaurantRegisterForm {
 	@NotBlank(message = "説明を入力してください")
 	private String description;
 	
-	@NotNull(message = "予算（下限）を入力してください")
+	@NotNull(message = "下限を入力してください")
 	@Min(value = 1, message = "1円以上に設定してください。")
 	private Integer lowerPrice;
 	
-	@NotNull(message = "予算（上限）を入力してください")
+	@NotNull(message = "上限を入力してください")
 	@Min(value = 1, message = "1円以上に設定してください。")
 	private Integer upperPrice;
 	
-	@NotNull(message = "開店時間を入力してください")
-	private Time openingTime;
+	@NotBlank(message = "開店時間を入力してください")
+	private String openingTime;
 	
-	@NotNull(message = "閉店時間を入力してください")
-	private Time closingTime;
+	@NotBlank(message = "閉店時間を入力してください")
+	private String closingTime;
 	
 	@NotBlank(message = "郵便番号を入力してください")
 	private String postalCode;
@@ -46,5 +47,12 @@ public class RestaurantRegisterForm {
 	
 	@NotBlank(message = "電話番号を入力してください")
 	private String phoneNumber;
-
+	
+	@NotBlank(message = "定休日を入力してください")
+	private String regularHoliday;
+	
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	public Time getParsedTime(String from) throws Exception {
+		return new Time(sdf.parse(from).getTime());
+	}
 }

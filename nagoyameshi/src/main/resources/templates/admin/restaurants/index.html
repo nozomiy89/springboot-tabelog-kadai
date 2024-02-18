@@ -22,11 +22,15 @@
 								<form method="get" th:action="@{/admin/restaurants}" class="mb-3">
 									<div class="input-group">
 										<input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="店舗名">
-										<button type="submit" class="btn text-white shaeow-sm nagoyameshi-btn">検索</button>
+										<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
 									</div>
 								</form>
 								
-								<a href="#" class="btn text-white shadow-sm mb-3 nagomayeshi-btn">登録</a>
+								<a th:href="@{/admin/restaurants/register}" class="btn text-white shadow-sm mb-3 nagoyameshi-btn">登録</a>
+							</div>
+							
+							<div th:if="${successMessage}" class="alert alert-info">
+								<span th:text="${successMessage}"></span>
 							</div>
 							
 							<table class="table">
@@ -34,16 +38,18 @@
 									<tr>
 										<th scope="col">ID</th>
 										<th scope="col">店舗名</th>
+										<th scope="col">カテゴリ</th>
 										<th scope="col">郵便番号</th>
 										<th scope="col">住所</th>
 										<th scope="col">電話番号</th>
-										<th scope="col">ID</th>
+										<th scope="col"></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:each="restaurant : ${restaurantPage}">
 										<td th:text="${restaurant.getId()}"></td>
 										<td th:text="${restaurant.getName()}"></td>
+										<td th:text="${restaurant.getCategory.getName()}"></td>
 										<td th:text="${restaurant.getPostalCode()}"></td>
 										<td th:text="${restaurant.getAddress()}"></td>
 										<td th:text="${restaurant.getPhoneNumber()}"></td>
