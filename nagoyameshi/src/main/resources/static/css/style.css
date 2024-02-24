@@ -68,6 +68,23 @@ footer {
 	white-space: pre-wrap;
 }
 
+.nagoyameshi-link-danger {
+	color: #f2594b;
+}
+
+.nagoyameshi-link-danger:hover {
+	color: #a63c3c;
+}
+
+.nagoyameshi-btn-danger {
+	background-color: #f2594b !important;
+	transition: 0.1s;
+}
+
+.nagoyameshi-btn-danger:hover {
+	opacity: 0.8;
+}
+
 @media screen and(min-width: 1400px) {
 	.nagoyameshi-container {
 		max-width: 1200px;

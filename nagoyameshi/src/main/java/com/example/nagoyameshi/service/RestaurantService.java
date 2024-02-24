@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantRegisterForm;
 import com.example.nagoyameshi.repository.RestaurantRepository;
 
@@ -50,6 +51,36 @@ public class RestaurantService {
 		restaurant.setAddress(restaurantRegisterForm.getAddress());
 		restaurant.setPhoneNumber(restaurantRegisterForm.getPhoneNumber());
 		restaurant.setRegularHoliday(restaurantRegisterForm.getRegularHoliday());
+		
+		restaurantRepository.save(restaurant);
+	}
+	
+	@Transactional
+	public void update(RestaurantEditForm restaurantEditForm) throws Exception {
+		Restaurant restaurant = restaurantRepository.getReferenceById(restaurantEditForm.getId());
+		MultipartFile imageFile = restaurantEditForm.getImageFile();
+		Time openingTime = getParsedTime(restaurantEditForm.getOpeningTime());
+		Time closingTime = getParsedTime(restaurantEditForm.getClosingTime());
+		
+		if (!imageFile.isEmpty()){
+			String imageName = imageFile.getOriginalFilename();
+			String hashedImageName = generateNewFileName(imageName);
+			Path filePath = Paths.get("src/main/resources/static/storage/" + hashedImageName);
+			copyImageFile(imageFile, filePath);
+			restaurant.setImageName(hashedImageName);
+		}
+		
+		restaurant.setName(restaurantEditForm.getName());
+		restaurant.setCategory(restaurantEditForm.getCategory());
+		restaurant.setDescription(restaurantEditForm.getDescription());
+		restaurant.setLowerPrice(restaurantEditForm.getLowerPrice());
+		restaurant.setUpperPrice(restaurantEditForm.getUpperPrice());
+		restaurant.setOpeningTime(openingTime);
+		restaurant.setClosingTime(closingTime);
+		restaurant.setPostalCode(restaurantEditForm.getPostalCode());
+		restaurant.setAddress(restaurantEditForm.getAddress());
+		restaurant.setPhoneNumber(restaurantEditForm.getPhoneNumber());
+		restaurant.setRegularHoliday(restaurantEditForm.getRegularHoliday());
 		
 		restaurantRepository.save(restaurant);
 	}
