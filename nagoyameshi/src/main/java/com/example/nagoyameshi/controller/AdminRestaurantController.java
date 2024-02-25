@@ -99,8 +99,16 @@ public class AdminRestaurantController {
 		}
 	
 	@PostMapping("/{id}/update")
-	public String update(@ModelAttribute @Validated RestaurantEditForm restaurantEditForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception {
+	public String update(@PathVariable(name = "id") Integer id, @ModelAttribute @Validated RestaurantEditForm restaurantEditForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) throws Exception {
 		if (bindingResult.hasErrors()) {
+			Restaurant restaurant = restaurantRepository.getReferenceById(id);
+			String imageName = restaurant.getImageName();
+			List<Category> categories = categoryRepository.findAll();
+		
+			model.addAttribute("imageName", imageName);
+			model.addAttribute("restaurantEditForm", restaurantEditForm);
+			model.addAttribute("categories", categories);
+			
 			return "admin/restaurants/edit";
 		}
 		

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 	<div th:replace="~{fragment :: meta}"></div>
@@ -29,7 +29,7 @@
 
 						<h1 class="mb-4 text-center">店舗情報編集</h1>
 
-						<form method="post" th:action="@{admin/restaurants/__${restaurantEditForm.getId()}__/update}"
+						<form method="post" th:action="@{/admin/restaurants/__${restaurantEditForm.getId()}__/update}"
 							th:object="${restaurantEditForm}" enctype="multipart/form-data">
 							<input type="hidden" th:field="*{id}">
 
